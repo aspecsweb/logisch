@@ -1,17 +1,12 @@
 {
   "name": "logisch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generic Log Parsing",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
     "./apache": {
       "types": "./dist/parsers/apache/index.d.ts",
       "import": "./dist/parsers/apache/index.js",
