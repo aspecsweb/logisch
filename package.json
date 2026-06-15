@@ -2,27 +2,83 @@
   "name": "logisch",
   "version": "1.0.0",
   "description": "Generic Log Parsing",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./apache": {
+      "types": "./dist/parsers/apache/index.d.ts",
+      "import": "./dist/parsers/apache/index.js",
+      "require": "./dist/parsers/apache/index.cjs"
+    },
+    "./android": {
+      "types": "./dist/parsers/android/index.d.ts",
+      "import": "./dist/parsers/android/index.js",
+      "require": "./dist/parsers/android/index.cjs"
+    },
+    "./bgl": {
+      "types": "./dist/parsers/bgl/index.d.ts",
+      "import": "./dist/parsers/bgl/index.js",
+      "require": "./dist/parsers/bgl/index.cjs"
+    },
+    "./fallback": {
+      "types": "./dist/parsers/fallback/index.d.ts",
+      "import": "./dist/parsers/fallback/index.js",
+      "require": "./dist/parsers/fallback/index.cjs"
+    },
+    "./linux": {
+      "types": "./dist/parsers/linux/index.d.ts",
+      "import": "./dist/parsers/linux/index.js",
+      "require": "./dist/parsers/linux/index.cjs"
+    },
+    "./macos": {
+      "types": "./dist/parsers/macos/index.d.ts",
+      "import": "./dist/parsers/macos/index.js",
+      "require": "./dist/parsers/macos/index.cjs"
+    },
+    "./openssh": {
+      "types": "./dist/parsers/openssh/index.d.ts",
+      "import": "./dist/parsers/openssh/index.js",
+      "require": "./dist/parsers/openssh/index.cjs"
+    },
+    "./proxifier": {
+      "types": "./dist/parsers/proxifier/index.d.ts",
+      "import": "./dist/parsers/proxifier/index.js",
+      "require": "./dist/parsers/proxifier/index.cjs"
+    },
+    "./spark": {
+      "types": "./dist/parsers/spark/index.d.ts",
+      "import": "./dist/parsers/spark/index.js",
+      "require": "./dist/parsers/spark/index.cjs"
+    },
+    "./thunderbird": {
+      "types": "./dist/parsers/thunderbird/index.d.ts",
+      "import": "./dist/parsers/thunderbird/index.js",
+      "require": "./dist/parsers/thunderbird/index.cjs"
+    },
+    "./windows": {
+      "types": "./dist/parsers/windows/index.d.ts",
+      "import": "./dist/parsers/windows/index.js",
+      "require": "./dist/parsers/windows/index.cjs"
+    },
+    "./zookeeper": {
+      "types": "./dist/parsers/zookeeper/index.d.ts",
+      "import": "./dist/parsers/zookeeper/index.js",
+      "require": "./dist/parsers/zookeeper/index.cjs"
+    }
+  },
   "scripts": {
-    "dev": "vite",
     "build": "tsup"
   },
-  "homepage": "https://github.com/aspecsweb/logisch#readme",
-  "bugs": {
-    "url": "https://github.com/aspecsweb/logisch/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/aspecsweb/logisch.git"
-  },
   "license": "ISC",
-  "author": "",
-  "type": "commonjs",
-  "main": "index.js",
   "devDependencies": {
     "typescript": "~6.0.2",
-    "vite": "^8.0.12"
-  },
-  "dependencies": {
     "tsup": "^8.5.1"
   }
 }
