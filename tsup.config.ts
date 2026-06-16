@@ -2,7 +2,6 @@ import { defineConfig } from "tsup";
 
 export default defineConfig({
   entry: {
-    index: "src/index.ts",
     "parsers/apache/index": "src/parsers/apache/index.ts",
     "parsers/android/index": "src/parsers/android/index.ts",
     "parsers/bgl/index": "src/parsers/bgl/index.ts",
