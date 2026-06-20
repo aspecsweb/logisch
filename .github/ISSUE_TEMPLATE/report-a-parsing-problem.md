@@ -5,15 +5,6 @@ title: Issue with [Name] Log Parser
 labels: bug
 assignees: ''
 type: Bug
-
----
-
----
-name: Bug Report
-about: Report a problem or unexpected behavior in logisch
-title: "[Bug] <short description>"
-labels: bug
-assignees: ""
 ---
 
 ## Description

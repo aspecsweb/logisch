@@ -5,15 +5,6 @@ title: Add Log Parser for [name]
 labels: enhancement
 assignees: ''
 type: Feature
-
----
-
----
-name: New Log Parser Request
-about: Request support for a new log format parser in logisch
-title: "[Parser Request] <log format name>"
-labels: enhancement, parser
-assignees: ""
 ---
 
 ## Log Format Overview
