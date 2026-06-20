@@ -12,7 +12,7 @@ export class ThunderbirdParser extends BaseParser {
     );
     if (!match) return null;
 
-    const [, epochStr, node, rawService, rawMessage] = match;
+    const [, epochStr, node, , rawService, rawMessage] = match;
     const message = rawMessage.trim();
     const service = rawService.trim();
 
