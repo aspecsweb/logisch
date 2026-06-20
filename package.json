@@ -69,11 +69,22 @@
     }
   },
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint \"src/**/*.ts\"",
+    "lint:fix": "eslint \"src/**/*.ts\" --fix"
   },
   "license": "ISC",
   "devDependencies": {
-    "typescript": "~6.0.2",
-    "tsup": "^8.5.1"
+    "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^4.1.9",
+    "eslint": "^10.5.0",
+    "globals": "^17.6.0",
+    "tsup": "^8.5.1",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.61.1",
+    "vitest": "^4.1.9"
   }
 }

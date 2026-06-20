@@ -65,10 +65,13 @@ function extractService(line: string, timestampRaw: string): string {
   const after = line
     .slice(line.indexOf(timestampRaw) + timestampRaw.length)
     .trim();
-  const bracketed = after.match(/^[\[({]\s*([A-Za-z0-9._\-/]+)\s*[\])}]/);
+
+  // Fixed ESLint: Removed useless \[ and moved the hyphen to the end of the class
+  const bracketed = after.match(/^[[({]\s*([A-Za-z0-9._/-]+)\s*[\])}]/);
   if (bracketed) return bracketed[1];
 
-  const beforeColon = after.match(/^([A-Za-z][A-Za-z0-9._\-]{2,40}):/);
+  // Fixed ESLint: Moved the hyphen to the end of the class
+  const beforeColon = after.match(/^([A-Za-z][A-Za-z0-9._-]{2,40}):/);
   if (
     beforeColon &&
     !LEVEL_PATTERNS.some(({ regex }) => regex.test(beforeColon[1]))

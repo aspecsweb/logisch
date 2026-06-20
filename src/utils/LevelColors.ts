@@ -38,5 +38,6 @@ export function getLevelLabel(level: string): string {
     E: "Error",
     F: "Fatal",
   };
-  return labels[norm] || level;
+  // FIX: Return the normalized uppercase string instead of the raw input
+  return labels[norm] || norm;
 }
