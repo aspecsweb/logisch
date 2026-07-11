@@ -26,5 +26,26 @@ describe("OpenSSHParser", () => {
       expect(result?.level).toBe("ERROR");
       expect(result?.message).toContain("Failed password for root");
     });
+
+    it("should parse a WARN for invalid user attempts", () => {
+      const rawInvalidUser =
+        "Dec 10 06:55:47 dsldevice sshd[29907]: Invalid user admin from 218.188.2.4";
+      const result = parser.parse(rawInvalidUser, rawInvalidUser);
+      expect(result?.level).toBe("WARN");
+    });
+
+    it("should default to INFO for a successful, non-security event", () => {
+      const rawAccepted =
+        "Dec 10 06:55:48 dsldevice sshd[29908]: Accepted password for root from 218.188.2.4 port 22 ssh2";
+      const result = parser.parse(rawAccepted, rawAccepted);
+      expect(result?.level).toBe("INFO");
+    });
+
+    it("should reject lines from non-sshd services on the same host", () => {
+      const rawNonSsh =
+        "Dec 10 06:55:49 dsldevice su(pam_unix)[123]: session opened for user root";
+      expect(parser.canParse(rawNonSsh)).toBe(false);
+      expect(parser.parse(rawNonSsh, rawNonSsh)).toBeNull();
+    });
   });
 });

@@ -23,5 +23,19 @@ describe("ProxifierParser", () => {
       const expectedTime = new Date(expectedYear, 9, 25, 14, 32, 10).getTime(); // Month is 0-indexed (9 = Oct)
       expect(result?.time).toBe(expectedTime);
     });
+
+    it("should return null for lines that don't match the Proxifier log shape", () => {
+      expect(parser.parse("not a proxifier line", "not a proxifier line")).toBeNull();
+    });
+
+    it("should infer ERROR level heuristically from message content since Proxifier has no level token", () => {
+      const rawFailed =
+        "[10.25 14:32:10] chrome.exe - proxy.example.com:8080 close, connection failed";
+      const result = parser.parse(rawFailed, rawFailed);
+
+      expect(result?.level).toBe("ERROR");
+      // Must come from LEVEL_COLOR_MAP via resolveColor(), not a per-string HSL hash
+      expect(result?.color).toBe("#ef4444");
+    });
   });
 });

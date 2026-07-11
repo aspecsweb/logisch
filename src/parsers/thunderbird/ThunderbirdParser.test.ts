@@ -27,5 +27,17 @@ describe("ThunderbirdParser", () => {
       expect(result?.level).toBe("ERROR");
       expect(result?.message).toBe("failed to start database");
     });
+
+    it("should set WARN level if message contains 'disconnected'", () => {
+      const rawWarn =
+        "- 1131568290 2005.11.09 dn095 Nov  9 12:31:30 dn095 ciod: node disconnected";
+      const result = parser.parse(rawWarn, rawWarn);
+      expect(result?.level).toBe("WARN");
+    });
+
+    it("should return null for lines that don't match the Thunderbird cluster log shape", () => {
+      const notThunderbird = "Jun 14 15:16:01 combo sshd[1]: session opened";
+      expect(parser.parse(notThunderbird, notThunderbird)).toBeNull();
+    });
   });
 });

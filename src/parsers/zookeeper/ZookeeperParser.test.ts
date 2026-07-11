@@ -24,5 +24,19 @@ describe("ZookeeperParser", () => {
       const expectedTime = new Date(2015, 6, 29, 11, 13, 13, 293).getTime(); // 6 = July
       expect(result?.time).toBe(expectedTime);
     });
+
+    it("should return null for lines that don't match the Zookeeper log shape", () => {
+      expect(parser.parse("not a zookeeper line", "not a zookeeper line")).toBeNull();
+    });
+
+    it("should resolve the mapped theme color for a WARN level, not a hashed fallback", () => {
+      const rawWarn =
+        "2015-07-29 11:13:14,001 - WARN  [main:NIOServerCnxn@1] - Client disconnected";
+      const result = parser.parse(rawWarn, rawWarn);
+
+      expect(result?.level).toBe("WARN");
+      // Must come from LEVEL_COLOR_MAP via resolveColor(), not a per-string HSL hash
+      expect(result?.color).toBe("#f97316");
+    });
   });
 });
