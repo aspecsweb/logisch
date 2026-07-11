@@ -37,8 +37,10 @@ describe("LinuxSyslogParser", () => {
       expect(result?.service).toBe("combo/sshd(pam_unix)[19939]");
       expect(result?.message).toContain("authentication failure");
 
-      // Validating the hardcoded 2026 logic from the parser
-      const expectedTime = Date.parse("Jun 14 15:16:01 2026");
+      // Syslog timestamps carry no year; the parser assumes the current year.
+      const expectedTime = Date.parse(
+        `Jun 14 15:16:01 ${new Date().getFullYear()}`,
+      );
       expect(result?.time).toBe(expectedTime);
     });
 

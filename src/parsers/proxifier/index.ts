@@ -1,6 +1,6 @@
 import { BaseParser } from "../../core/BaseParser";
 import type { LogEntry } from "../../models/LogEntry";
-import { stringToHslColor } from "../../utils/ColorUtils";
+import { localDateTimeToEpoch } from "../../utils/DateUtils";
 
 export class ProxifierParser extends BaseParser {
   protected regex =
@@ -19,10 +19,10 @@ export class ProxifierParser extends BaseParser {
     const [hour, min, sec] = timePart.split(":").map(Number);
 
     const year = new Date().getFullYear();
-    const time = new Date(year, month - 1, day, hour, min, sec).getTime();
+    const time = localDateTimeToEpoch(year, month, day, hour, min, sec);
 
     const level = this.detectLevel(undefined, message);
-    const color = stringToHslColor(level);
+    const color = this.resolveColor(level);
 
     return {
       time,

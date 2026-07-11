@@ -1,6 +1,6 @@
 import { BaseParser } from "../../core/BaseParser";
 import type { LogEntry } from "../../models/LogEntry";
-import { stringToHslColor } from "../../utils/ColorUtils";
+import { localDateTimeToEpoch } from "../../utils/DateUtils";
 
 export class ZookeeperParser extends BaseParser {
   protected regex =
@@ -21,9 +21,9 @@ export class ZookeeperParser extends BaseParser {
     const [hour, min, sec] = timePart.split(":").map(Number);
     const ms = Number(msPart);
 
-    const time = new Date(year, month - 1, day, hour, min, sec, ms).getTime();
+    const time = localDateTimeToEpoch(year, month, day, hour, min, sec, ms);
     const level = this.detectLevel(rawLevel, message);
-    const color = stringToHslColor(level);
+    const color = this.resolveColor(level);
 
     return {
       time,

@@ -1,5 +1,6 @@
 import type { LogEntry } from "../../models/LogEntry";
 import { BaseParser } from "../../core/BaseParser";
+import { matchSyslogLine, resolveSyslogTime } from "../../utils/SyslogUtils";
 
 export class MacOSXParser extends BaseParser {
   protected regex =
@@ -8,36 +9,14 @@ export class MacOSXParser extends BaseParser {
   public parse(line: string, raw: string): LogEntry | null {
     if (!this.canParse(line) && !line.includes("com.apple")) return null;
 
-    const match = line.match(
-      /^([A-Z][a-z]{2}\s+\d+\s+\d{2}:\d{2}:\d{2})\s+(\S+)\s+([^:]+):(.*)$/,
-    );
-    if (!match) return null;
+    const parts = matchSyslogLine(line);
+    if (!parts) return null;
 
-    const [, rawTimestamp, host, rawService, rawMessage] = match;
-    const message = rawMessage.trim();
-    const service = rawService.trim();
-
-    const timeMs = Date.parse(`${rawTimestamp.replace(/\s+/g, " ")} 2026`);
-    const time = isNaN(timeMs) ? Date.now() : timeMs;
-
-    let level: "INFO" | "WARN" | "ERROR" | "DEBUG" = "INFO";
-    const lowerMsg = message.toLowerCase();
-
-    if (
-      lowerMsg.includes("deny") ||
-      lowerMsg.includes("unexpected") ||
-      lowerMsg.includes("unplug")
-    ) {
-      level = "WARN";
-    } else if (
-      lowerMsg.includes("exited abnormally") ||
-      lowerMsg.includes("failed")
-    ) {
-      level = "ERROR";
-    }
+    const { rawTimestamp, host, service, message } = parts;
+    const level = this.detectSyslogLevel(message);
 
     return {
-      time,
+      time: resolveSyslogTime(rawTimestamp),
       rawTimestamp,
       level,
       service: `${host}/${service}`,
@@ -45,5 +24,24 @@ export class MacOSXParser extends BaseParser {
       color: this.resolveColor(level),
       raw,
     };
+  }
+
+  private detectSyslogLevel(message: string): "INFO" | "WARN" | "ERROR" {
+    const lowerMsg = message.toLowerCase();
+
+    if (
+      lowerMsg.includes("deny") ||
+      lowerMsg.includes("unexpected") ||
+      lowerMsg.includes("unplug")
+    ) {
+      return "WARN";
+    }
+    if (
+      lowerMsg.includes("exited abnormally") ||
+      lowerMsg.includes("failed")
+    ) {
+      return "ERROR";
+    }
+    return "INFO";
   }
 }

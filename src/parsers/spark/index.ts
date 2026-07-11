@@ -1,6 +1,6 @@
 import { BaseParser } from "../../core/BaseParser";
 import type { LogEntry } from "../../models/LogEntry";
-import { stringToHslColor } from "../../utils/ColorUtils";
+import { localDateTimeToEpoch } from "../../utils/DateUtils";
 
 export class SparkParser extends BaseParser {
   protected regex =
@@ -20,10 +20,10 @@ export class SparkParser extends BaseParser {
     const [hour, min, sec] = timePart.split(":").map(Number);
 
     const year = 2000 + yy;
-    const time = new Date(year, mm - 1, dd, hour, min, sec).getTime();
+    const time = localDateTimeToEpoch(year, mm, dd, hour, min, sec);
 
     const level = this.detectLevel(rawLevel, message);
-    const color = stringToHslColor(level);
+    const color = this.resolveColor(level);
 
     return {
       time,

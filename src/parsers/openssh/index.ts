@@ -1,5 +1,6 @@
 import type { LogEntry } from "../../models/LogEntry";
 import { BaseParser } from "../../core/BaseParser";
+import { matchSyslogLine, resolveSyslogTime } from "../../utils/SyslogUtils";
 
 export class OpenSSHParser extends BaseParser {
   protected regex =
@@ -8,40 +9,14 @@ export class OpenSSHParser extends BaseParser {
   public parse(line: string, raw: string): LogEntry | null {
     if (!this.canParse(line)) return null;
 
-    const match = line.match(
-      /^([A-Z][a-z]{2}\s+\d+\s+\d{2}:\d{2}:\d{2})\s+(\S+)\s+([^:]+):(.*)$/,
-    );
-    if (!match) return null;
+    const parts = matchSyslogLine(line);
+    if (!parts) return null;
 
-    const [, rawTimestamp, host, rawService, rawMessage] = match;
-    const message = rawMessage.trim();
-    const service = rawService.trim();
-
-    const timeMs = Date.parse(`${rawTimestamp.replace(/\s+/g, " ")} 2026`);
-    const time = isNaN(timeMs) ? Date.now() : timeMs;
-
-    let level: "INFO" | "WARN" | "ERROR" | "FATAL" = "INFO";
-    const upperMsg = message.toUpperCase();
-
-    if (
-      upperMsg.includes("BREAK-IN ATTEMPT") ||
-      upperMsg.includes("TOO MANY AUTHENTICATION FAILURES")
-    ) {
-      level = "FATAL";
-    } else if (
-      upperMsg.includes("AUTHENTICATION FAILURE") ||
-      upperMsg.includes("FAILED PASSWORD")
-    ) {
-      level = "ERROR";
-    } else if (
-      upperMsg.includes("INVALID USER") ||
-      upperMsg.includes("UNKNOWN")
-    ) {
-      level = "WARN";
-    }
+    const { rawTimestamp, host, service, message } = parts;
+    const level = this.detectSyslogLevel(message);
 
     return {
-      time,
+      time: resolveSyslogTime(rawTimestamp),
       rawTimestamp,
       level,
       service: `${host}/${service}`,
@@ -49,5 +24,28 @@ export class OpenSSHParser extends BaseParser {
       color: this.resolveColor(level),
       raw,
     };
+  }
+
+  private detectSyslogLevel(
+    message: string,
+  ): "INFO" | "WARN" | "ERROR" | "FATAL" {
+    const upperMsg = message.toUpperCase();
+
+    if (
+      upperMsg.includes("BREAK-IN ATTEMPT") ||
+      upperMsg.includes("TOO MANY AUTHENTICATION FAILURES")
+    ) {
+      return "FATAL";
+    }
+    if (
+      upperMsg.includes("AUTHENTICATION FAILURE") ||
+      upperMsg.includes("FAILED PASSWORD")
+    ) {
+      return "ERROR";
+    }
+    if (upperMsg.includes("INVALID USER") || upperMsg.includes("UNKNOWN")) {
+      return "WARN";
+    }
+    return "INFO";
   }
 }
