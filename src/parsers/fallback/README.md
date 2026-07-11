@@ -1,33 +1,44 @@
-## AndroidParser
+## FallbackParser
 
-Parst Android Logcat Logs in zwei unterstützten Formaten.
+Heuristischer Safety-Net-Parser für Logformate, die keinem dedizierten Parser entsprechen.
 
-### Unterstützte Formate
+### Funktionsweise
 
-- Format A: `MM-DD HH:mm:ss.SSS PID TID LEVEL TAG: message`
-- Format B: `YYYY-MM-DD HH:mm:ss.SSS PID-TID TAG LEVEL message`
+- `canParse()` gibt immer `true` zurück — dient als letzter Parser in der Registry-Kette
+- Sucht die Zeile nach einer Reihe bekannter Timestamp-Muster ab (der Reihe nach, erster Treffer gewinnt):
+  - ISO 8601 (`2024-03-15T10:30:00Z`, mit optionalen Millisekunden/Offset)
+  - Klassischer Syslog (`Oct 25 14:32:10`, Jahr wird als aktuelles Jahr angenommen)
+  - Android-artig (`MM-DD HH:mm:ss.SSS`, Jahr wird als aktuelles Jahr angenommen)
+  - Slash-getrennt (`yy/MM/dd HH:mm:ss` bzw. `yyyy/MM/dd HH:mm:ss`)
+  - 13-stelliger Epoch (Millisekunden)
+  - 10-stelliger Epoch (Sekunden → wird auf ms hochgerechnet)
+- Gibt `null` zurück, wenn kein Muster einen gültigen Timestamp liefert
 
-### Features
+### Level Logik
 
-- Erkennt Log-Level: V, D, I, W, E, F
-- Zwei Regex-Formate für unterschiedliche Android-Ausgaben
-- Farbzuordnung pro Level
-- Fallback-Farbgenerierung via HSL
-- Zeitkonvertierung mit aktueller Jahresannahme (Format A)
+Eigenständige Musterliste (unabhängig von `BaseParser.detectLevel`), sortiert nach Priorität:
 
-### Besonderheiten
+- FATAL: CRITICAL, EMERG, ALERT, CRIT
+- ERROR: ERR, EXCEPTION, SEVERE
+- WARN: WARNING, NOTICE
+- INFO: INFORMATION
+- DEBUG: TRACE, VERBOSE, FINE
+- Default: INFO
 
-- Format A nutzt `parseMockEpoch()` → ergänzt aktuelles Jahr
-- Format B nutzt direkte ISO-Zeit
-- PID/TID werden extrahiert und gespeichert
+### Service-Erkennung
+
+Untersucht den Text direkt nach dem gefundenen Timestamp:
+
+- Geklammerter Ausdruck (`[Service]`, `(Service)`, `{Service}`)
+- Oder ein `Service:`-Präfix, sofern es kein Level-Token ist
+- Andernfalls leerer String
 
 ### Output
 
-- time (ms epoch)
+- time
 - rawTimestamp
 - level
-- service (tag)
-- message
+- service (kann leer sein)
+- message (vollständige Rohzeile)
 - color
-- pid / tid
-- raw line
+- raw

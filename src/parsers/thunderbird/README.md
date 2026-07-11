@@ -1,52 +1,29 @@
-## ProxifierParser
+## ThunderbirdParser
 
-Parser für Proxifier Netzwerklogs.
-
-### Format
-
-[MM.DD HH:mm:ss] process - proxy:port action
-
-### Features
-
-- Kein expliziter Level → heuristisch
-- Timestamp ohne Jahr → current year injection
-- Service = process name
-
-### Level
-
-- via detectLevel(message)
-
-### Output
-
-- time
-- rawTimestamp
-- level
-- service
-- message
-- color
-- raw
-  📄 SparkParser.md
-
-## SparkParser
-
-Parser für Apache Spark Logs.
+Parser für Thunderbird-Cluster-Logs (HPC-Knoten-Topologien).
 
 ### Format
 
-yy/MM/dd HH:mm:ss LEVEL service: message
+`- epoch yyyy.mm.dd node MMM DD HH:mm:ss node service: message`
 
 ### Features
 
-- Converts yy → 20yy
-- Detects Spark service component
-- Level via detectLevel()
+- Epoch-basierte Zeit (Sekunden → ms)
+- Node- und Service-Gruppierung
+- Cluster-bewusste Service-Benennung
+
+### Level Logik
+
+- "got not answer", "failed", "error" → ERROR
+- "warning", "disconnected" → WARN
+- Default → INFO
 
 ### Output
 
-- time
+- time (epoch × 1000)
 - rawTimestamp
 - level
-- service
+- service = Thunderbird/node/service
 - message
 - color
 - raw

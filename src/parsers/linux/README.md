@@ -8,7 +8,7 @@ MMM DD HH:mm:ss host service: message
 ### Features
 
 - Host + Service Trennung
-- Year injection (fixed: 2026)
+- Year injection (aktuelles Jahr, da Syslog-Timestamps kein Jahr enthalten)
 - Security-aware severity detection
 - Auth-spezifische Logik
 

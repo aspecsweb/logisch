@@ -62,3 +62,21 @@ Follow these steps to set up the project locally for development:
 To test changes live inside your frontend application without publishing, use [npm link](https://docs.npmjs.com/cli/v9/commands/npm-link)
 Then, in your web app's root directory, run: `npm link logisch`
 Build the package: `npm run build`
+
+## Testing & Linting
+
+```sh
+npm test          # Run the test suite once
+npm run test:watch    # Re-run tests on file changes
+npm run test:coverage # Run tests with coverage report
+npm run lint       # Lint the src directory
+npm run lint:fix     # Lint and auto-fix
+```
+
+## Contributing
+
+New parsers, heuristic improvements, and performance work are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md) for how to add a new parser module and expose it as a subpath export.
+
+## License
+
+[ISC](./LICENSE.md)

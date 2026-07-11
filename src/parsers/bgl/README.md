@@ -1,33 +1,29 @@
-## AndroidParser
+## BGLParser
 
-Parst Android Logcat Logs in zwei unterstützten Formaten.
+Parser für IBM Blue Gene/L Supercomputer RAS-Logs.
 
-### Unterstützte Formate
-
-- Format A: `MM-DD HH:mm:ss.SSS PID TID LEVEL TAG: message`
-- Format B: `YYYY-MM-DD HH:mm:ss.SSS PID-TID TAG LEVEL message`
+### Format
+AlertFlag Epoch Date Node Date Node RAS Layer Level Message
 
 ### Features
 
-- Erkennt Log-Level: V, D, I, W, E, F
-- Zwei Regex-Formate für unterschiedliche Android-Ausgaben
-- Farbzuordnung pro Level
-- Fallback-Farbgenerierung via HSL
-- Zeitkonvertierung mit aktueller Jahresannahme (Format A)
+- Epoch-basierte Zeit (Sekunden → ms)
+- Alert-Flag-Erkennung (`-` = normal, alles andere = Alert)
+- Level-Normalisierung via `detectLevel()`
+- Service = Layer/Node
 
-### Besonderheiten
+### Level Logik
 
-- Format A nutzt `parseMockEpoch()` → ergänzt aktuelles Jahr
-- Format B nutzt direkte ISO-Zeit
-- PID/TID werden extrahiert und gespeichert
+- Level wird aus dem RAS-Level-Token via `detectLevel()` bestimmt
+- Ist das Alert-Flag gesetzt und der erkannte Level `INFO`, wird er auf `WARN` hochgestuft
+- Bei einem Alert wird der Nachricht ein `[ALERT_CAT: <flag>]`-Präfix vorangestellt
 
 ### Output
 
-- time (ms epoch)
+- time (epoch × 1000)
 - rawTimestamp
 - level
-- service (tag)
-- message
+- service = layer/node
+- message (inkl. optionalem Alert-Präfix)
 - color
-- pid / tid
-- raw line
+- raw

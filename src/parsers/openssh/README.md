@@ -5,6 +5,10 @@ Parser für SSHD / PAM Logs.
 ### Format
 MMM DD HH:mm:ss host sshd: message
 
+### Besonderheiten
+
+- Year injection: aktuelles Jahr (Syslog-Timestamps enthalten kein Jahr)
+
 ### Security Levels
 
 - FATAL:

@@ -23,7 +23,7 @@ MMM DD HH:mm:ss host service: message
 
 ### Besonderheiten
 
-- Year injection: 2026
+- Year injection: aktuelles Jahr (Syslog-Timestamps enthalten kein Jahr)
 - Fallback aktiv bei `com.apple`
 
 ### Output

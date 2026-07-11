@@ -12,14 +12,14 @@ Thank you for looking into improving `logisch`! We appreciate help adding new pa
 To keep the ecosystem clean and scalable, all new log engines must be self-contained as a subpath module. Here is how to add one:
 
 ### 1. Create the Module Folder
-Add a new directory under `src/parsers/` named after your target parser (e.g., `src/parsers/nginx/`). Inside, create an `index.ts` and a `readme.md`.
+Add a new directory under `src/parsers/` named after your target parser (e.g., `src/parsers/nginx/`). Inside, create an `index.ts` and a `README.md`.
 
 ### 2. Implement the `LogParser` Interface
 Your class can either implement `LogParser` directly or extend `BaseParser` if it benefits from standard level and color resolutions:
 
 ```typescript
 import { BaseParser } from "../../core/BaseParser";
-import type { LogEntry } from "../../models/logentry";
+import type { LogEntry } from "../../models/LogEntry";
 
 export class NginxParser extends BaseParser {
   protected regex = /^(\d{4}\/\d{2}\/\d{2}\s\d{2}:\d{2}:\d{2})\s+\[([a-z]+)\]\s+(.*)$/;

@@ -1,27 +1,27 @@
-## ThunderbirdParser
+## ProxifierParser
 
-Parser für Cluster / Thunderbird Logs.
+Parser für Proxifier Netzwerklogs.
 
 ### Format
-epoch yyyy.mm.dd node syslog process: message
+
+`[MM.DD HH:mm:ss] process - proxy:port action`
 
 ### Features
 
-- Epoch-based time (seconds → ms)
-- Node + process grouping
-- Cluster-aware service naming
+- Kein explizites Level-Token → heuristische Erkennung über `detectLevel(undefined, message)`
+- Timestamp ohne Jahr → current year injection
+- Service = Prozessname direkt aus der Zeile
 
-### Level Logic
+### Level
 
-- error / failed → ERROR
-- warning / disconnected → WARN
+Wird über die Fallback-Nachrichten-Heuristik in `detectLevel()` bestimmt (z. B. `FAILED` → `ERROR`), da Proxifier-Logs keinen eigenen Level-Token führen.
 
 ### Output
 
 - time
 - rawTimestamp
 - level
-- service = Thunderbird/node/service
+- service
 - message
 - color
 - raw
