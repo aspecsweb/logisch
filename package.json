@@ -1,6 +1,6 @@
 {
   "name": "logisch",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Generic Log Parsing",
   "type": "module",
   "main": "./dist/index.js",
@@ -26,6 +26,11 @@
       "types": "./dist/parsers/fallback/index.d.ts",
       "import": "./dist/parsers/fallback/index.js",
       "require": "./dist/parsers/fallback/index.cjs"
+    },
+    "./json": {
+      "types": "./dist/parsers/json/index.d.ts",
+      "import": "./dist/parsers/json/index.js",
+      "require": "./dist/parsers/json/index.cjs"
     },
     "./linux": {
       "types": "./dist/parsers/linux/index.d.ts",

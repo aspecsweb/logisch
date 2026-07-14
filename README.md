@@ -15,6 +15,7 @@ You can import parsers individually to keep your production bundles minimal:
 - `logisch/android` - Android Logcat (Formats A & B)
 - `logisch/apache` - Apache Server Error Logs
 - `logisch/bgl` - IBM Blue Gene/L Supercomputer Logs
+- `logisch/json` - Structured JSON Logs (pino, bunyan, winston, ...)
 - `logisch/linux` - Linux System & Authentication Logs
 - `logisch/macos` - Apple macOS Diagnostic Daemon Logs
 - `logisch/openssh` - OpenSSH Daemon Security Audits

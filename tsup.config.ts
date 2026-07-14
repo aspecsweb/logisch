@@ -6,6 +6,7 @@ export default defineConfig({
     "parsers/android/index": "src/parsers/android/index.ts",
     "parsers/bgl/index": "src/parsers/bgl/index.ts",
     "parsers/fallback/index": "src/parsers/fallback/index.ts",
+    "parsers/json/index": "src/parsers/json/index.ts",
     "parsers/linux/index": "src/parsers/linux/index.ts",
     "parsers/macos/index": "src/parsers/macos/index.ts",
     "parsers/openssh/index": "src/parsers/openssh/index.ts",
