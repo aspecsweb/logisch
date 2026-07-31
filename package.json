@@ -1,6 +1,6 @@
 {
   "name": "logisch",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Generic Log Parsing",
   "type": "module",
   "main": "./dist/index.js",
@@ -71,6 +71,11 @@
       "types": "./dist/parsers/zookeeper/index.d.ts",
       "import": "./dist/parsers/zookeeper/index.js",
       "require": "./dist/parsers/zookeeper/index.cjs"
+    },
+    "./schema": {
+      "types": "./dist/schema/index.d.ts",
+      "import": "./dist/schema/index.js",
+      "require": "./dist/schema/index.cjs"
     }
   },
   "scripts": {

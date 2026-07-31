@@ -1,58 +1,16 @@
 import { BaseParser } from "../../core/BaseParser";
 import type { LogEntry } from "../../models/LogEntry";
 
-// Candidate key aliases used across common structured-logging libraries
-// (pino, bunyan, winston, logrus, zap, serilog, ...). Matched case-insensitively.
-const TIMESTAMP_KEYS = [
-  "timestamp",
-  "time",
-  "ts",
-  "@timestamp",
-  "datetime",
-  "date",
-  "eventtime",
-  "@t",
-];
-const LEVEL_KEYS = [
-  "level",
-  "severity",
-  "lvl",
-  "loglevel",
-  "log.level",
-  "levelname",
-  "@l",
-];
-const MESSAGE_KEYS = [
-  "message",
-  "msg",
-  "text",
-  "event",
-  "short_message",
-  "@m",
-];
-const SERVICE_KEYS = [
-  "service",
-  "logger",
-  "name",
-  "component",
-  "module",
-  "source",
-  "channel",
-  "app",
-];
-const PID_KEYS = ["pid", "process", "processid", "process_id"];
-const TID_KEYS = ["tid", "thread", "threadid", "thread_id"];
-const TAG_KEYS = ["tag", "category"];
-
-// pino/bunyan and syslog emit numeric severities; map them to canonical names.
-const NUMERIC_LEVELS: Record<number, string> = {
-  10: "TRACE",
-  20: "DEBUG",
-  30: "INFO",
-  40: "WARN",
-  50: "ERROR",
-  60: "FATAL",
-};
+import {
+  LEVEL_KEYS,
+  MESSAGE_KEYS,
+  NUMERIC_LEVELS,
+  PID_KEYS,
+  SERVICE_KEYS,
+  TAG_KEYS,
+  TID_KEYS,
+  TIMESTAMP_KEYS,
+} from "../../utils/JsonFieldAliases";
 
 type JsonRecord = Record<string, unknown>;
 

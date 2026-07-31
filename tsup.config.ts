@@ -15,6 +15,7 @@ export default defineConfig({
     "parsers/thunderbird/index": "src/parsers/thunderbird/index.ts",
     "parsers/windows/index": "src/parsers/windows/index.ts",
     "parsers/zookeeper/index": "src/parsers/zookeeper/index.ts",
+    "schema/index": "src/schema/index.ts",
   },
   format: ["cjs", "esm"],
   dts: true,
